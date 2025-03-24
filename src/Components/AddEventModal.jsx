@@ -1,9 +1,5 @@
-// AddEventModal.js
-import React, { useState } from "react";
-import { toast } from "react-toastify";
-import useEventValidation from "../hooks/useEventValidation";
-import { useAtom } from "jotai";
-import { userAtom } from "../atom";
+import React from "react";
+import useAddEvent from "../hooks/useAddEvent";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
+  CardContent,  
   CardFooter,
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
@@ -30,64 +26,25 @@ const AddEventModal = ({
   prefillData,
   existingEvents = [],
 }) => {
-  const [user] = useAtom(userAtom);
-
-  // Prepopulate organiser if the user is logged in
-  const [title, setTitle] = useState("");
-  const [organiser, setOrganiser] = useState(user ? user.displayName : "");
-  const [project, setProject] = useState("");
-  const [startDate, setStartDate] = useState(prefillData?.startDate || "");
-  const [startTime, setStartTime] = useState(prefillData?.startTime || "");
-  const [endDate, setEndDate] = useState(prefillData?.endDate || "");
-  const [endTime, setEndTime] = useState(prefillData?.endTime || "");
-
-  const todayMin = new Date().toISOString().split("T")[0];
-
-  const fields = { title, organiser, project, startDate, startTime, endDate, endTime };
-  const { errors, validate, setErrors } = useEventValidation({
-    fields,
-    existingEvents,
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validate();
-
-    if (validationErrors.overlap) {
-      toast.error(validationErrors.overlap);
-      return;
-    }
-    if (validationErrors.duration) {
-      toast.error(validationErrors.duration);
-      return;
-    }
-    if (Object.keys(validationErrors).length > 0) {
-      return;
-    }
-
-    const newEvent = {
-      title,
-      organiser,
-      project,
-      start: new Date(`${startDate}T${startTime}`),
-      end: new Date(`${endDate}T${endTime}`),
-      // Attach creator info from logged-in user
-      createdBy: user ? user.uid : null,
-      createdByName: user ? user.displayName : organiser,
-    };
-
-    onSubmit(newEvent);
-    // Reset form fields (organiser remains prefilled if user exists)
-    setTitle("");
-    setOrganiser(user ? user.displayName : "");
-    setProject("");
-    setStartDate("");
-    setStartTime("");
-    setEndDate("");
-    setEndTime("");
-    setErrors({});
-    onClose();
-  };
+  const {
+    title,
+    setTitle,
+    organiser,
+    setOrganiser,
+    project,
+    setProject,
+    startDate,
+    setStartDate,
+    startTime,
+    setStartTime,
+    endDate,
+    setEndDate,
+    endTime,
+    setEndTime,
+    todayMin,
+    errors,
+    handleSubmit,
+  } = useAddEvent(prefillData, onClose, onSubmit, existingEvents);
 
   return (
     <Dialog open={open} onOpenChange={(value) => !value && onClose()}>
@@ -138,7 +95,7 @@ const AddEventModal = ({
                     value={organiser}
                     onChange={(e) => setOrganiser(e.target.value)}
                     className="border border-gray-300 rounded-lg pl-10 pr-4 py-2.5 w-full"
-                    disabled={!!user} // disable input if user is logged in
+                    disabled={true} // disabled if a user is logged in
                   />
                 </div>
                 {errors.organiser && <span className="text-red-500 text-xs">{errors.organiser}</span>}

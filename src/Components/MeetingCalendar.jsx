@@ -14,12 +14,13 @@ import { useMeetings } from "../hooks/useMeetings";
 import { useCalendar } from "../hooks/useCalendar";
 import { useAtom } from "jotai";
 import { userAtom } from "../atom";
+import useMeetingCalendar from "../hooks/useMeetingCalendar";
 
 const localizer = momentLocalizer(moment);
 
 const MeetingCalendar = () => {
   const [searchParams] = useSearchParams();
-  const [user] = useAtom(userAtom)
+  const [user] = useAtom(userAtom);
   const roomId = searchParams.get("roomId");
   const endpoint = roomId
     ? `http://localhost:5000/api/meetings/room/${roomId}`
@@ -52,40 +53,8 @@ const MeetingCalendar = () => {
     openEditModal,
     closeEditModal,
   } = useCalendar();
-
-  const handleRefresh = () => {
-    refresh();
-  };
-
-  const handleAddEvent = async (newEvent) => {
-    try {
-      await addMeeting(newEvent, roomId, meetings);
-    } catch (err) {
-      console.error("Error adding event:", err);
-    }
-  };
-
-  const handleUpdateEvent = async (updatedEvent) => {
-    try {
-      await updateMeeting(updatedEvent, meetings);
-    } catch (err) {
-      console.error("Error updating event:", err);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!selectedEvent) return;
-    const eventId = selectedEvent.id;
-    if (!eventId) {
-      console.error("Event ID is missing:", selectedEvent);
-      return;
-    }
-    try {
-      await deleteMeeting(eventId, meetings);
-    } catch (err) {
-      console.error("Error deleting event:", err);
-    }
-  };
+  const { handleAddEvent, handleDelete, handleRefresh, handleUpdateEvent } =
+    useMeetingCalendar({ refresh, addMeeting, updateMeeting, deleteMeeting });
 
   const events = meetings.map((meeting) => ({
     ...meeting,

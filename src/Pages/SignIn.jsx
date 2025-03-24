@@ -3,25 +3,10 @@ import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useAtom } from "jotai";
 import { userAtom } from "../atom";
+import useSignin from "../hooks/useSignin";
 
 const SignIn = () => {
-  const [user, setUser] = useAtom(userAtom);
-
-  const handleSuccess = (credentialResponse) => {
-    if (credentialResponse.credential) {
-      const decoded = jwtDecode(credentialResponse.credential);
-
-      setUser({
-        uid: decoded.sub,
-        displayName: decoded.name,
-        email: decoded.email,
-      });
-    }
-  };
-
-  const handleError = () => {
-    console.log("Google Sign In failed ");
-  };
+  const {handleError, handleSuccess} = useSignin()
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
