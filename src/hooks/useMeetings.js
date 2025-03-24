@@ -10,7 +10,7 @@ const defaultFetcher = async (url) => {
   if (!data || data.length === 0) {
     throw new Error("No meetings found. Please add new data.");
   }
-  return data;
+  return data || [];
 };
 
 export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
@@ -22,8 +22,8 @@ export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
 
   const addMeeting = async (newMeeting, roomId, currentData) => {
     const postEndpoint = roomId
-      ? `http://localhost:5000/api/meetings/room/${roomId}`
-      : "http://localhost:5000/api/meetings";
+      ? `https://scheduler-app-backend-1.onrender.com//api/meetings/room/${roomId}`
+      : "https://scheduler-app-backend-1.onrender.com//api/meetings";
     await mutate(
       endpoint,
       async (currentData) => {
@@ -48,7 +48,7 @@ export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
       endpoint,
       async (currentData) => {
         const response = await fetch(
-          `http://localhost:5000/api/meetings/${updatedMeeting.id}`,
+          `https://scheduler-app-backend-1.onrender.com//api/meetings/${updatedMeeting.id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -75,7 +75,7 @@ export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
       endpoint,
       async (currentData) => {
         const response = await fetch(
-          `http://localhost:5000/api/meetings/${meetingId}`,
+          `https://scheduler-app-backend-1.onrender.com/api/meetings/${meetingId}`,
           { method: "DELETE" }
         );
         if (!response.ok) throw new Error("Failed to delete event");

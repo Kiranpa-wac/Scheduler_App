@@ -23,8 +23,8 @@ const MeetingCalendar = () => {
   const [user] = useAtom(userAtom);
   const roomId = searchParams.get("roomId");
   const endpoint = roomId
-    ? `http://localhost:5000/api/meetings/room/${roomId}`
-    : "http://localhost:5000/api/meetings";
+    ? `https://scheduler-app-backend-1.onrender.com/api/meetings/room/${roomId}`
+    : "https://scheduler-app-backend-1.onrender.com/api/meetings";
 
   const {
     meetings,
