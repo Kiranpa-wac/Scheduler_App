@@ -1,6 +1,6 @@
 import React from 'react'
 
-const useMeetingCalendar = ({ refresh, addMeeting, updateMeeting, deleteMeeting, roomId, meetings }) => {
+const useMeetingCalendar = ({ refresh, addMeeting, updateMeeting, deleteMeeting, roomId, meetings, selectedEvent }) => {
     const handleRefresh = () => {
         refresh();
       };
