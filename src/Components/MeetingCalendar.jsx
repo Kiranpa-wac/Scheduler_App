@@ -54,7 +54,15 @@ const MeetingCalendar = () => {
     closeEditModal,
   } = useCalendar();
   const { handleAddEvent, handleDelete, handleRefresh, handleUpdateEvent } =
-    useMeetingCalendar({ refresh, addMeeting, updateMeeting, deleteMeeting, roomId, meetings, selectedEvent });
+    useMeetingCalendar({
+      refresh,
+      addMeeting,
+      updateMeeting,
+      deleteMeeting,
+      roomId,
+      meetings,
+      selectedEvent,
+    });
 
   const events = meetings.map((meeting) => ({
     ...meeting,
@@ -206,7 +214,10 @@ const MeetingCalendar = () => {
         open={showEventDetails}
         onClose={closeEventDetails}
         event={selectedEvent}
-        onDelete={handleDelete}
+        onDelete={async () => {
+          await handleDelete();
+          closeEventDetails();
+        }}
         onEditClick={openEditModal}
       />
       <EditEventModal
