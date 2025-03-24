@@ -5,7 +5,7 @@ import useEventValidation from "./useEventValidation";
 import { useAtom } from "jotai";
 import { userAtom } from "../atom";
 
-const useAddEvent = (prefillData, onClose, onSubmit, existingEvents = []) => {
+const useAddEvent = (prefillData, onClose, onSubmit, existingEvents = [], roomId) => {
   const [user] = useAtom(userAtom);
 
   const [title, setTitle] = useState("");

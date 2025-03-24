@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import useAddEvent from "../hooks/useAddEvent";
 import {
   Dialog,
@@ -26,6 +27,8 @@ const AddEventModal = ({
   prefillData,
   existingEvents = [],
 }) => {
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get("roomId");
   const {
     title,
     setTitle,
@@ -44,7 +47,7 @@ const AddEventModal = ({
     todayMin,
     errors,
     handleSubmit,
-  } = useAddEvent(prefillData, onClose, onSubmit, existingEvents);
+  } = useAddEvent(prefillData, onClose, onSubmit, existingEvents, roomId);
 
   return (
     <Dialog open={open} onOpenChange={(value) => !value && onClose()}>

@@ -20,8 +20,8 @@ const localizer = momentLocalizer(moment);
 
 const MeetingCalendar = () => {
   const [searchParams] = useSearchParams();
-  const [user] = useAtom(userAtom);
   const roomId = searchParams.get("roomId");
+  const [user] = useAtom(userAtom);
   const endpoint = roomId
     ? `https://scheduler-app-backend-1.onrender.com/api/meetings/room/${roomId}`
     : "https://scheduler-app-backend-1.onrender.com/api/meetings";
@@ -54,7 +54,7 @@ const MeetingCalendar = () => {
     closeEditModal,
   } = useCalendar();
   const { handleAddEvent, handleDelete, handleRefresh, handleUpdateEvent } =
-    useMeetingCalendar({ refresh, addMeeting, updateMeeting, deleteMeeting, roomId });
+    useMeetingCalendar({ refresh, addMeeting, updateMeeting, deleteMeeting, roomId, meetings });
 
   const events = meetings.map((meeting) => ({
     ...meeting,

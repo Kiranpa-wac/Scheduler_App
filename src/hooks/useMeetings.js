@@ -22,8 +22,8 @@ export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
 
   const addMeeting = async (newMeeting, roomId, currentData) => {
     const postEndpoint = roomId
-      ? `https://scheduler-app-backend-1.onrender.com//api/meetings/room/${roomId}`
-      : "https://scheduler-app-backend-1.onrender.com//api/meetings";
+      ? `https://scheduler-app-backend-1.onrender.com/api/meetings/room/${roomId}`
+      : "https://scheduler-app-backend-1.onrender.com/api/meetings";
     await mutate(
       endpoint,
       async (currentData) => {
@@ -48,7 +48,7 @@ export const useMeetings = (endpoint, fetcher = defaultFetcher) => {
       endpoint,
       async (currentData) => {
         const response = await fetch(
-          `https://scheduler-app-backend-1.onrender.com//api/meetings/${updatedMeeting.id}`,
+          `https://scheduler-app-backend-1.onrender.com/api/meetings/${updatedMeeting.id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
